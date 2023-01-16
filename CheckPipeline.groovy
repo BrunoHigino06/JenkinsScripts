@@ -8,14 +8,18 @@ pipeline {
     stages {
         stage('CheckFile') {
             steps {
-                echo 'Checking the directory Inbox for new files'
 
-                ${find} = powershell "Test-Path -Path \\192.168.200.140\\C:\\Users\\Bruno\\Downloads\\test\\*"
-                if(${find} = True){
-                    powershell ""
-                }
-                else {
-                    echo 'File not found'
+                script{
+                    find = powershell (returnStdout:true, script: "Invoke-Command -ComputerName 192.168.200.131 -ScriptBlock {Test-Path -Path C:\\FTP\\inbox\\*}").trim()
+
+                    echo find 
+
+                    if(find == "True"){
+                        echo "A é igual a 2"
+                    }
+                    else{
+                        echo "não e igual"
+                    }
                 }
             }
         }
