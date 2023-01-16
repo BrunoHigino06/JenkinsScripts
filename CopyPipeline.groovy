@@ -11,7 +11,7 @@ pipeline {
 
                 script{
 
-                    powershell (returnStdout:true, script: "Invoke-Command -ComputerName 192.168.200.131 -ScriptBlock {Test-Path -Path C:\\FTP\\inbox\\*}").trim()
+                    file = powershell (returnStdout:true, script: "Invoke-Command -ComputerName 192.168.200.131 -ScriptBlock {Get-ChildItem | select Name}").trim()
 
                 }
             }
