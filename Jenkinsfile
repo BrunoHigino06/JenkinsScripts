@@ -15,10 +15,10 @@ pipeline {
                     echo find 
 
                     if(find == "True"){
-                        echo "A é igual a 2"
+                        echo "True"
                     }
                     else{
-                        echo "não e igual"
+                        echo "False"
                     }
                 }
             }
