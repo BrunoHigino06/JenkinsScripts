@@ -10,7 +10,7 @@ pipeline {
             steps {
 
                 script{
-                    find = powershell (returnStdout:true, script: "Test-Path -Path \\\\192.168.200.131\\ftp\\*}").trim()
+                    find = powershell (returnStdout:true, script: "{Test-Path -Path \\\\192.168.200.131\\ftp\\*}").trim()
 
                     echo find 
 
