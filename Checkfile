@@ -17,6 +17,7 @@ pipeline {
                     if(find == "True"){
                         echo "True"
                     }
+                    
                     else{
                         echo "False"
                     }
