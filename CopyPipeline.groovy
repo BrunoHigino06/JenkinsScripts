@@ -11,7 +11,7 @@ pipeline {
 
                 script{
 
-                    find = powershell (returnStdout:true, script: "{Test-Path -Path \\\\192.168.200.131\\ftp\\*}") 
+                    find = powershell (returnStdout:true, script: "{Test-Path -Path \\\\192.168.200.131\\ftp\\*}").trim()
 
                     if(find == "True"){
 
@@ -22,7 +22,7 @@ pipeline {
                     else{
 
                         currentBuild.result = 'FAILURE'
-                        echo 'Error to copy the file to the deployment server'
+                        echo 'File not find on the folder'
 
                     }
                 }
