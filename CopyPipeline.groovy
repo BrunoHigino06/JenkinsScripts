@@ -11,13 +11,16 @@ pipeline {
 
                 script{
 
-                    try{
+                    find = powershell (returnStdout:true, script: "{Test-Path -Path \\\\192.168.200.131\\ftp\\*}") 
+
+                    if(find == "True"){
+
                         file = powershell (returnStdout:true, script: "Get-ChildItem -Path \\\\192.168.200.131\\ftp\\ | select Name").trim()
-                        powershell (returnStdout:true, script: "Copy-Item '\\\\192.168.200.131\\ftp\\${file}' -Destination '\\\\192.168.200.132\\inbox\\'")                        
+                        powershell (returnStdout:true, script: "Copy-Item '\\\\192.168.200.131\\ftp\\${file}' -Destination '\\\\192.168.200.132\\inbox\\'")    
 
                     }
-                    
-                    catch(Exception e){
+                    else{
+
                         currentBuild.result = 'FAILURE'
                         echo 'Error to copy the file to the deployment server'
 
