@@ -3,10 +3,14 @@ pipeline {
 
     environment{
         def find = ''
+        def file = ''
+        def hash = ''
+        def hashfile = ''
+        def deployhash = ''
     }
 
     stages {
-        stage('Copy File') {
+        stage('Check File') {
             steps {
 
                 script{
@@ -14,17 +18,8 @@ pipeline {
                     find = powershell (returnStdout:true, script: "{Test-Path -Path \\\\192.168.200.131\\ftp\\*}").trim()
 
                     if(find == "True"){
+                        echo 'File not find on the folder'
                         
-                        if(){
-
-                            file = powershell (returnStdout:true, script: "Get-ChildItem -Path \\\\192.168.200.131\\ftp\\ | select Name").trim()
-                            powershell (returnStdout:true, script: "Copy-Item '\\\\192.168.200.131\\ftp\\${file}' -Destination '\\\\192.168.200.132\\inbox\\'")
-
-                        }
-                        else{
-
-                        } 
-
                     }
                     else{
 
@@ -34,6 +29,17 @@ pipeline {
                     }
                 }
             }
+        }
+        stage('Check Hash'){
+            when {
+                expression{find == 'True'}
+            }
+
+            powershell (returnStdout:true, script: "Move-Item '\\\\192.168.200.131\\ftp\\*' -Destination '\\\\192.168.200.132\\inbox\\'")
+            hashfile = powershell (returnStdout:true, script: "{Get-ChildItem -Path \\\\192.168.200.132\\inbox\\ -Filter *.txt}").trim()
+            hash = powershell (returnStdout:true, script: "{Get-Content \\\\192.168.200.132\\inbox\\${hashfile} }").trim()
+            deployhash = powershell (returnStdout:true, script: "{Get-FileHash \\\\192.168.200.132\\inbox\\${file} }").trim()
+
         }
     }
 }
