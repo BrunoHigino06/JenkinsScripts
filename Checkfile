@@ -19,6 +19,7 @@ pipeline {
                     }
                     
                     else{
+                        currentBuild.result = 'FAILURE'
                         echo "False"
                     }
                 }
