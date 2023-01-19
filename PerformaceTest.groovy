@@ -10,7 +10,7 @@ pipeline {
             steps {
 
                 script{
-                    runLoadRunnerScript 'C:\\DNSQuery\\'
+                    runLoadRunnerScript 'C:\\DNSQuery\\DNSQuery.usr'
                 }
             }
         }
