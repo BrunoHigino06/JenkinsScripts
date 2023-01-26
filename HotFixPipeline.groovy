@@ -6,10 +6,13 @@ pipeline {
         stage("Start the pipeline") {
             steps {
                 script {
-                    for(int i=0; i < env.DevServers.size(); i++) {
-                        stage(env.DevServers[i]){
-                            echo "Element: ${env.DevServers[i]}"
+                    env.DevServers.tokenize(",").each { server ->
+                        for(int i=0; i < ${server}.size(); i++) {
+                            stage(env.DevServers[i]){
+                                echo "Server is $server"
+                            }
                         }
+                        echo "Server is $server"
                     }
                 }
             }
