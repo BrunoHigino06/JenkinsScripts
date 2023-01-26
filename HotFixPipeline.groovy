@@ -1,8 +1,8 @@
+def tasks = [:]
+
 pipeline {
     agent any
-    environment{
-        def tasks = ''
-    }
+    
    
     stages {
         stage("Start the Deployment") {
