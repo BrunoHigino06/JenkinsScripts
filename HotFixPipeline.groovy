@@ -2,10 +2,10 @@ pipeline {
     agent any
    
     stages {
-        stage("Application Sync") {
-            steps {
-                script {
-                    env.DevServers.tokenize(",").each { server ->
+        env.DevServers.tokenize(",").each { server ->
+            stage("$server") {
+                steps {
+                    script {
                         echo "Server is $server"
                     }
                 }
