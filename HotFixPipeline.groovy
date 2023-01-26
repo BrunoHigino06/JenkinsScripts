@@ -4,11 +4,9 @@ pipeline {
     stages {
         stage("Start the Deployment") {
             steps {
-                parallel {
-                    env.DevServers.tokenize(",").each { server ->
-                        stage(server){
-                            echo "Server is $server in parallel"
-                        }
+                env.DevServers.tokenize(",").each { server ->
+                    stage(server){
+                        echo "Server is $server in parallel"
                     }
                 }
             }
