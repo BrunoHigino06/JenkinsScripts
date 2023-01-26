@@ -6,11 +6,11 @@ pipeline {
             steps {
                 script {
                     env.DevServers.tokenize(",").each { server ->
-                        parallel {
+                        parallel (
                             stage(server){
                                 echo "Server is $server in parallel"
                             }
-                        }
+                        )
 
                     }
                 }
