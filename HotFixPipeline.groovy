@@ -2,7 +2,6 @@ def tasks = [:]
 
 pipeline {
     agent any
-    
    
     stages {
         stage("Start the Deployment") {
