@@ -7,7 +7,7 @@ pipeline {
             steps {
                 script {
                     env.DevServers.tokenize(",").each { server ->
-                        for(int i=0; i < ${server}.size(); i++) {
+                        for(int i=0; i < server.size(); i++) {
                             stage(env.DevServers[i]){
                                 echo "Server is $server"
                             }
