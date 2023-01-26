@@ -8,13 +8,13 @@ pipeline {
             steps {
                 script {
                     env.DevServers.tokenize(",").each { server ->
-                        deploymentStages[server] = {
+                        tasks[server] = {
                             stage(server){
                                 echo "Server is $server in parallel"
                             }
                         }   
                     }
-                    parallel deploymentStages
+                    parallel tasks
                 }
             }
         }
