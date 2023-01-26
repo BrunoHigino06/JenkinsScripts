@@ -3,11 +3,17 @@ pipeline {
    
     stages {
         
-        stage("Application Sync") {
+        stage("Start the pipeline") {
             steps {
                 script {
                     env.DevServers.tokenize(",").each { server ->
-                        echo "Server is $server"
+                        stage("${server}") {
+                            steps {
+                                script {
+                                    echo "Server is $server"
+                                }
+                            }
+                        }
                     }
                 }
             }
