@@ -3,7 +3,7 @@ pipeline {
    
     stages {
         
-        stage("Start the pipeline") {
+        stage("Start the Deployment") {
             steps {
                 script {
                     env.DevServers.tokenize(",").each { server ->
