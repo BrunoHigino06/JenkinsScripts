@@ -1,3 +1,5 @@
+def deploymentStages = [:]
+
 pipeline {
     agent any
    
@@ -6,13 +8,17 @@ pipeline {
             steps {
                 script {
                     env.DevServers.tokenize(",").each { server ->
-                        stage(server){
-                            echo "Server is $server in parallel"
-                        }
+                        deploymentStages["${server.key}"] = {
+                            stage(server){
+                                echo "Server is $server in parallel"
+                            }
+                        }   
                     }
+                    parallel $server
                 }
             }
         }
-        parallel $server
     }
 }
+
+
