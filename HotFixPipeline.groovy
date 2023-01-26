@@ -13,6 +13,6 @@ pipeline {
                 }
             }
         }
-        parallel server
+        parallel $server
     }
 }
