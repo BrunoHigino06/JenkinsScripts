@@ -14,7 +14,7 @@ pipeline {
                             }
                         }   
                     }
-                    parallel $server
+                    parallel deploymentStages
                 }
             }
         }
