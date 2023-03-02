@@ -1,26 +1,99 @@
+def calculatedHashValue
+def connectionSuccessful
+def deployableFileExtension
+def deployableFileName = ""
+def deployPossibilitiesCount
+def fileFound
+def verifiedHashFileName = ""
+def verifiedHashValue = ""
+def sharedServerIp = "172.31.11.219"
+
 pipeline {
     agent any
-
-    environment{
-        def find = ''
-    }
-
     stages {
-        stage('CheckFile') {
+        stage('Check') {
             steps {
-
-                script{
-                    find = powershell (returnStdout:true, script: "{Test-Path -Path \\\\192.168.200.131\\ftp\\*}").trim()
-
-                    echo find 
-
-                    if(find == "True"){
-                        echo "True"
-                    }
+                script {
                     
-                    else{
-                        currentBuild.result = 'FAILURE'
-                        echo "False"
+                    // To repeat the pipeline
+                    while(true) {
+                        
+                        // To return true if there is a successful connection with Shared Server
+                        connectionSuccessful = powershell (script: "Test-Connection ${sharedServerIp} -Quiet",returnStdout: true).trim()
+
+                        // To return true if there are any file on the Shared Server
+                        fileFound = powershell (script: "Test-Path -Path \\\\${sharedServerIp}\\adms\\outbox\\*", returnStdout: true).trim()
+
+                        // If the connection with the Shared Server is successfull
+                        if (connectionSuccessful == "True"){
+
+                            // If there are any file on the Shared Server
+                            if(fileFound == "True"){
+                                
+                                // To get the name of the deployable file
+                                deployableFileName = powershell (script: "(Get-ChildItem -Path \"\\\\${sharedServerIp}\\adms\\outbox\" -recurse -exclude *.txt).Name", returnStdout: true).trim()
+
+                                // To check if there is a deployable file
+                                if (deployableFileName != ""){
+                                
+                                    // To get the extension of the deployable file
+                                    deployableFileExtension = powershell (script: "(Get-ChildItem -Path \"\\\\${sharedServerIp}\\adms\\outbox\" -recurse -exclude *.txt).Extension", returnStdout: true).trim()
+
+                                    // To reset the counter of deploy possibilities
+                                    deployPossibilitiesCount = 0
+
+                                    // To check if the deployable file has characteristics of more than one deploy possibility
+                                    if(deployableFileName.contains('HF')) deployPossibilitiesCount++
+                                    if(deployableFileName.contains('CU')) deployPossibilitiesCount++
+                                    if(deployableFileName.contains('PA')) deployPossibilitiesCount++
+                                    if(deployableFileExtension.contains('dll')) deployPossibilitiesCount++
+
+                                    // If the deployable files only allows one type of deployment (normal situation)
+                                    if (deployPossibilitiesCount == 1){
+
+                                        // To get the name of the verified hash file
+                                        verifiedHashFileName = powershell (script: "(Get-ChildItem -Path \"\\\\${sharedServerIp}\\adms\\outbox\" -recurse -Filter *.txt).Name", returnStdout: true).trim()
+
+                                        // To check if there is a verified hash file
+                                        if (verifiedHashFileName != "") {
+
+                                            // To get the hash that is inside the .txt file
+                                            verifiedHashValue = powershell (script: "type \\\\${sharedServerIp}\\adms\\outbox\\${verifiedHashFileName}", returnStdout: true).trim()
+
+                                            // To check if the hash file has a hash value
+                                            if (verifiedHashValue != ""){
+
+                                                // To calculate the hash of the deployable file
+                                                calculatedHashValue = powershell (script: "(Get-FileHash \\\\${sharedServerIp}\\adms\\outbox\\${deployableFileName}).Hash", returnStdout: true).trim()
+
+                                                // To check if the calculated hash is equals to verified hash
+                                                if(calculatedHashValue == verifiedHashValue){
+                                                    
+                                                    // To capture any error, so the Check pipeline doesn't end if the Copy pipeline fails
+                                                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                                                        
+                                                        // Call the "Copy" pipeline
+                                                        build job: 'adms-copy'
+                                                    }
+                                                }
+                                                else echo "Deployable file and hash file don't match"
+                                            }
+                                            else echo 'The hash file does not have a hash value'
+                                        }
+                                        else echo 'Text file with hash not found'
+                                    }
+                                    else if (deployPossibilitiesCount > 1) echo 'The deployable file has characteristics of more than one deploy possibilities'
+                                    else echo 'Deployable file not found'
+
+                                }
+                                else echo 'Deployable file not found'
+                            }
+                            else echo 'Outbox folder is empty or not accessible'
+                        }
+                        else echo 'Failed to connect with the Shared Server'
+
+                        // Waits five seconds before repeating the pipeline
+                        sleep(time:5,unit:"SECONDS")
                     }
                 }
             }
