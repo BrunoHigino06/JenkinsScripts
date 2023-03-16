@@ -66,7 +66,7 @@ def getDeployableFileData() {
         return true
     }
     else {
-        sendFailureEmail("Deployable file not found")
+        //sendFailureEmail("Deployable file not found")
         return false
     }
 }
