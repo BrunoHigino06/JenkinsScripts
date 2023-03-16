@@ -8,7 +8,7 @@ cumulativeUpdateLabel = "CU"
 dllLabel = "dll"
 hotFixLabel = "HF"
 patchLabel = "PA"
-sharedServerIp = "127.0.0.1"
+sharedServerIp = "localhost"
 outboxFolderPath = "C:\\Jenkins_folders\\shared_server_folders\\outbox"
 sleepTimeSeconds = 5
 
