@@ -176,7 +176,7 @@ pipeline {
                         // and the deployable file is sucessfully checked
                         // and the hash is sucessfully checked
                         if (connectionSucessful(sharedServerIp) &&
-                            //emailRecipientsChecked() &&
+                            emailRecipientsChecked() &&
                             folderNotEmpty(outboxFolderPath) && 
                             deployableFileChecked() && 
                             hashChecked(outboxFolderPath,outboxFolderPath)) {
