@@ -8,8 +8,8 @@ cumulativeUpdateLabel = "CU"
 dllLabel = "dll"
 hotFixLabel = "HF"
 patchLabel = "PA"
-sharedServerIp = "192.168.200.130"
-outboxFolderPath = "C:\\Jenkins_folders\\shared_server_folders\\outbox"
+sharedServerIp = "172.31.10.34"
+outboxFolderPath = "\\\\${sharedServerIp}\\adms\\outbox"
 sleepTimeSeconds = 5
 
 // Other variables organized by name
@@ -66,12 +66,22 @@ def getDeployableFileData() {
         return true
     }
     else {
-        echo "test"
+        sendFailureEmail("Deployable file not found")
         return false
     }
 }
 
 // Function to send an email to responsible team reporting a failure
+def sendFailureEmail(message) {
+
+    // Send an email to responsible team
+    mail to: env.emailRecipients,
+    subject: "Failure on pipeline ${JOB_NAME}, build ${BUILD_NUMBER}",
+    body: "Failure message: ${message}\n\nPipeline: ${JOB_NAME}\n\nBuild: ${BUILD_NUMBER}\n\nLink: ${JOB_URL}"
+    
+    // Register on Jenkins console
+    echo "Failure message: ${message}"
+}
 
 // Function to check if the deployable file is actually deployable
 def deployableFileChecked() {
@@ -93,13 +103,13 @@ def deployableFileChecked() {
 
     // If the deployable file allows more than one type of deployment
     else if (counter > 1) {
-        echo "test"
+        sendFailureEmail("The deployable file has characteristics of more than one deploy possibilities")
         return false
     }
     
     // If the deployable files does not allow any type of deployment
     else if (counter == 0) {
-        echo "test"
+        sendFailureEmail("Deployable file not found")
         return false
     }
 }
@@ -127,14 +137,11 @@ def hashChecked(fileToCheckFolderPath, verifiedHashFolderPath){
 
             // To check if the calculated hash is equals to verified hash
             if(calculatedHashValue == verifiedHashValue) return true
-            else 
-                echo "test"
+            else sendFailureEmail("Deployable file and hash file don't match")
         }
-        else 
-            echo "test"
+        else sendFailureEmail("The hash file does not have a hash value")
     }
-    else 
-        echo "test"
+    else sendFailureEmail("Text file with hash not found")
 
     return false
 }
