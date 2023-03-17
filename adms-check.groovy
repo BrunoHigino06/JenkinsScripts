@@ -72,16 +72,6 @@ def getDeployableFileData() {
 }
 
 // Function to send an email to responsible team reporting a failure
-def sendFailureEmail(message) {
-
-    // Send an email to responsible team
-    mail to: env.emailRecipients,
-    subject: "Failure on pipeline ${JOB_NAME}, build ${BUILD_NUMBER}",
-    body: "Failure message: ${message}\n\nPipeline: ${JOB_NAME}\n\nBuild: ${BUILD_NUMBER}\n\nLink: ${JOB_URL}"
-    
-    // Register on Jenkins console
-    echo "Failure message: ${message}"
-}
 
 // Function to check if the deployable file is actually deployable
 def deployableFileChecked() {
