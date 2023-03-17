@@ -36,6 +36,7 @@ tryAgain = "1"
 unsucessfulDeploymentArray = []
 verifiedHashFileName = ""
 verifiedHashValue = "y"
+continueloop = true
 
 // Function to check the connection with a server. It fails the pipeline if there is there is no sucessful connection.
 def checkConnection(server) {
@@ -319,7 +320,7 @@ def deploy(server, commandsArray) {
             commandTries = 0
             
             // To repeat the command for a number of times
-            while (true) {
+            while (continueloop == true) {
                 stage("Executing ${commandsArray}") {
 
                 
@@ -382,6 +383,7 @@ def deploy(server, commandsArray) {
                             //build job: 'adms-smoke-tests'
                         
                             // Exit the loop so no other command is executed
+                            continueloop == false
                         }
                         else {
 
