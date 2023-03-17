@@ -191,7 +191,7 @@ pipeline {
                             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                 
                                 // Call the "Copy" pipeline
-                                build job: 'adms-copy'
+                                build job: 'copy'
                             }
                         }
 
