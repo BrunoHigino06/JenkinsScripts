@@ -312,8 +312,8 @@ def deploy(server, commandsArray) {
 
         // To create a separated stage for each server
         stage("Deploy to ${server}") {
-            
-            // To begin from the first command of the list
+            stage("Executing ${commandsArray}") {
+                // To begin from the first command of the list
             commandCounter = 0
 
             // To reset the counter of tries for each command
@@ -393,6 +393,10 @@ def deploy(server, commandsArray) {
                     }
                 }
             }
+
+            }
+            
+            
         }
     }   
 }
