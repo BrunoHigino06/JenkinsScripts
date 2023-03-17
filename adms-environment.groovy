@@ -321,79 +321,79 @@ def deploy(server, commandsArray) {
             // To repeat the command for a number of times
             while (true) {
                 stage("Executing ${commandsArray}") {
-                    // To increase the counter of tries for each command
-                commandTries++
 
-                // To reset the command controller as if the command is sucessful, because if it is not sucessful it will entry the catch and will set the controller as unsucessful
-                commandSucessful = true
-
-                // Show the command and the attempt on the console
-                echo ">>>>> Command: ${commandsArray[commandCounter]} Attempt: ${commandTries}"
-
-                try {
-                    // Command line of the Deployment Tool according to the documentation (it is as echo now but when the Deployment Tool is set up, change it to powershell using Invoke-Command)
-                    echo "C:\\Program Files\\SchneiderElectric\\DeploymentTool\\3.8.3\\bin\\DeploymentTool.exe AD -system ${server} -mode MyDMS -pass <password> -email name1.lastname1@schneider-electric-dms.com name2.lastname2@schneider-electric-dms.com -configuration ${commandsArray[commandCounter]} -environment InstallationDir:${inboxFolderPath}\\${deployableFileName}"
-
-                    // Fail the command within the failure percentage (only for test purposes, on production set failurePercentage to 0)
-                    //randomNumber1to100 = Math.abs(new Random().nextInt() % 100) + 1
-                    //if (randomNumber1to100 < failurePercentage){
-                    //    powershell (script: "Test-Connection 172.31.0.184 -ErrorAction Stop",returnStdout: true).trim()
-                    //}
-                }
-                catch (Exception e1) {
-                    
-                    // Show that the command failed on the console
-                    echo ">>>>> Failed"
-
-                    // Set the command controller as unsucessful
-                    commandSucessful = false
-
-                    // If Jenkins tried to execute the command for less than 5 times
-                    if (commandTries < 5) {
-                        
-                        // Wait before trying again
-                        sleep(time:sleepTimeSeconds,unit:"SECONDS")
-                    }
-                    else {
-                        
-                        // Put the server on a unsucessful deployment list, that will be shown in the end of the pipeline
-                        unsucessfulDeploymentArray.push(server)
-
-                        // Send an email to responsible team
-                        echo "Failed to execute the command ${commandsArray[commandCounter]} and the following on the server ${server}"
-                    }
-                }
-
-                // If the command controler is still sucessfull
-                if (commandSucessful == true) {
-                    
-                    // Show that the command was successful on the console
-                    echo ">>>>> Success"
-
-                    // If the last command of the list is already executed
-                    if (commandCounter == commandsArray.size()-1){
-                        
-                        // Send an email to responsible team and register in the console
-                        sendSuccess("Deployment sucessfull on server ${server}")
-
-                        // Start Smoke Tests Pipeline
-                        //build job: 'adms-smoke-tests'
-                        
-                        // Exit the loop so no other command is executed
-                        break
-                    }
-                    else {
-
-                        // Increase the command counter, so in the next loop the next command of the list will be executed
-                        commandCounter ++
-
-                        // Reset the command tries, so the system will try to execute the next command for 5 times or less
-                        commandTries = 0
-                    }
-                }
-
-                }
                 
+                    // To increase the counter of tries for each command
+                    commandTries++
+
+                    // To reset the command controller as if the command is sucessful, because if it is not sucessful it will entry the catch and will set the controller as unsucessful
+                    commandSucessful = true
+
+                    // Show the command and the attempt on the console
+                    echo ">>>>> Command: ${commandsArray[commandCounter]} Attempt: ${commandTries}"
+
+                    try {
+                        // Command line of the Deployment Tool according to the documentation (it is as echo now but when the Deployment Tool is set up, change it to powershell using Invoke-Command)
+                        echo "C:\\Program Files\\SchneiderElectric\\DeploymentTool\\3.8.3\\bin\\DeploymentTool.exe AD -system ${server} -mode MyDMS -pass <password> -email name1.lastname1@schneider-electric-dms.com name2.lastname2@schneider-electric-dms.com -configuration ${commandsArray[commandCounter]} -environment InstallationDir:${inboxFolderPath}\\${deployableFileName}"
+
+                        // Fail the command within the failure percentage (only for test purposes, on production set failurePercentage to 0)
+                        //randomNumber1to100 = Math.abs(new Random().nextInt() % 100) + 1
+                        //if (randomNumber1to100 < failurePercentage){
+                        //    powershell (script: "Test-Connection 172.31.0.184 -ErrorAction Stop",returnStdout: true).trim()
+                        //}
+                    }
+                    catch (Exception e1) {
+                    
+                        // Show that the command failed on the console
+                        echo ">>>>> Failed"
+
+                        // Set the command controller as unsucessful
+                        commandSucessful = false
+
+                        // If Jenkins tried to execute the command for less than 5 times
+                        if (commandTries < 5) {
+                        
+                            // Wait before trying again
+                            sleep(time:sleepTimeSeconds,unit:"SECONDS")
+                        }
+                        else {
+                        
+                            // Put the server on a unsucessful deployment list, that will be shown in the end of the pipeline
+                            unsucessfulDeploymentArray.push(server)
+
+                            // Send an email to responsible team
+                            echo "Failed to execute the command ${commandsArray[commandCounter]} and the following on the server ${server}"
+                        }
+                    }
+
+                    // If the command controler is still sucessfull
+                    if (commandSucessful == true) {
+                    
+                        // Show that the command was successful on the console
+                        echo ">>>>> Success"
+
+                        // If the last command of the list is already executed
+                        if (commandCounter == commandsArray.size()-1){
+                        
+                            // Send an email to responsible team and register in the console
+                            sendSuccess("Deployment sucessfull on server ${server}")
+
+                            // Start Smoke Tests Pipeline
+                            //build job: 'adms-smoke-tests'
+                        
+                            // Exit the loop so no other command is executed
+                            break
+                        }
+                        else {
+
+                            // Increase the command counter, so in the next loop the next command of the list will be executed
+                            commandCounter ++
+
+                            // Reset the command tries, so the system will try to execute the next command for 5 times or less
+                            commandTries = 0
+                        }
+                    }
+                }    
             }
         }
     }   
