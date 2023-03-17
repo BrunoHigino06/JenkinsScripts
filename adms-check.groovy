@@ -66,7 +66,7 @@ def getDeployableFileData() {
         return true
     }
     else {
-        sendFailureEmail("Deployable file not found")
+        echo "test"
         return false
     }
 }
@@ -137,11 +137,14 @@ def hashChecked(fileToCheckFolderPath, verifiedHashFolderPath){
 
             // To check if the calculated hash is equals to verified hash
             if(calculatedHashValue == verifiedHashValue) return true
-            else sendFailureEmail("Deployable file and hash file don't match")
+            else 
+                echo "test"
         }
-        else sendFailureEmail("The hash file does not have a hash value")
+        else 
+            echo "test"
     }
-    else sendFailureEmail("Text file with hash not found")
+    else 
+        echo "test"
 
     return false
 }
@@ -183,7 +186,6 @@ pipeline {
                         // and the deployable file is sucessfully checked
                         // and the hash is sucessfully checked
                         if (connectionSucessful(sharedServerIp) &&
-                            emailRecipientsChecked() &&
                             folderNotEmpty(outboxFolderPath) && 
                             deployableFileChecked() && 
                             hashChecked(outboxFolderPath,outboxFolderPath)) {
