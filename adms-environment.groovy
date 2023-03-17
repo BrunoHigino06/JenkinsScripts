@@ -9,16 +9,16 @@ emailRecipients = p.gesualdo.junior@accenture.com
 */
 
 // Easy update variables
-deploymentServerIp = "172.31.11.171"
+deploymentServerIp = "192.168.200.130"
 cumulativeUpdateLabel = "CU"
 dllLabel = "DLL"
 hotFixLabel = "HF"
 patchLabel = "PA"
 environmentParam = "DEV"
-deployedFolderPath = "\\\\${deploymentServerIp}\\adms\\deployed"
-failedFolderPath = "\\\\${deploymentServerIp}\\adms\\failed"
-inboxFolderPath = "\\\\${deploymentServerIp}\\adms\\inbox"
-partialDeployedFolderPath = "\\\\${deploymentServerIp}\\adms\\partial-deployed"
+deployedFolderPath = "C:\\Jenkins_folders\\jenkins_server_folders\\deployed"
+failedFolderPath = "C:\\Jenkins_folders\\jenkins_server_folders\\failed"
+inboxFolderPath = "C:\\Jenkins_folders\\jenkins_server_folders\\inbox"
+partialDeployedFolderPath = "C:\\Jenkins_folders\\jenkins_server_folders\\partial"
 sleepTimeSeconds = 1
 triesAllowed = 5
 failurePercentage = 70
@@ -399,7 +399,7 @@ def deploy(server, commandsArray) {
 
 // Function to end the pipeline as failed, sending an email with a message received as parameter and registering in Jenkins console the same message
 def failPipeline(message) {
-    sendFailureEmail(message)
+    //sendFailureEmail(message)
     error(message)
 }
 
@@ -455,7 +455,7 @@ def removeHashFile_IfFailure() {
 
 // Function to send an alert by email with a message received as parameter and registering in Jenkins console the same message
 def sendAlert(message) {
-    sendFailureEmail(message)
+    //sendFailureEmail(message)
     echo(message)
 }
 
@@ -464,7 +464,7 @@ def sendEnvironmentVariableFail(environmentVariableName) {
     generalMessage = ("The environment variable ${environmentVariableName} is missing on Jenkins configuration.\n\nThis configuration is necessary to proceed with this pipeline.\n\nAs detailed at Deployment Automation documentation, please access Jenkins configuration through Manage Jenkins >> Configure System >> Environment Variables and configure the environment variable.")
     
     // Send an email to responsible team
-    sendFailureEmail("${generalMessage}\n\nThen, please access the build through the link below, hover the paused stage in front of number ${BUILD_NUMBER}, type 1 to try again and click Proceed. You can also cancel the build typing 0 and clicking Proceed.")
+    echo "${generalMessage}\n\nThen, please access the build through the link below, hover the paused stage in front of number ${BUILD_NUMBER}, type 1 to try again and click Proceed. You can also cancel the build typing 0 and clicking Proceed."
 
     // Ask the user to try again or end the pipeline
     tryAgain = input message: "${generalMessage}\n\nThen, please return here and type 1 to try again or 0 to end the pipeline, than click Proceed.", parameters: [string(defaultValue: '', description: '', name: '')]
@@ -663,7 +663,7 @@ pipeline {
                     checkConnection(deploymentServerIp)
 
                     // To check the emailRecipients environment variable
-                    checkEnvironmentVariable_emailRecipients()
+                    //checkEnvironmentVariable_emailRecipients()
 
                     // To check if the type of deployment was received as a parameter
                     checkParameter("deployment type",params.deployParam)
@@ -696,7 +696,7 @@ pipeline {
                                 if (env.devServers == null) {                                        
                                     
                                     // Send an email to responsible team
-                                    sendFailureEmail("The list of servers for ${environmentParam} environment is missing.\n\nAs detailed at Deployment Automation documentation, please access Jenkins configuration through Manage Jenkins >> Configure System >> Environment Variables and configure the environment variable for ${environmentParam} environment.\n\nThen, please access the build through the link below, hover the paused stage in front of number ${BUILD_NUMBER}, type 1 to try again and click Proceed. You can also cancel the build typing 0 and clicking Proceed.")
+                                    echo "The list of servers for ${environmentParam} environment is missing.\n\nAs detailed at Deployment Automation documentation, please access Jenkins configuration through Manage Jenkins >> Configure System >> Environment Variables and configure the environment variable for ${environmentParam} environment.\n\nThen, please access the build through the link below, hover the paused stage in front of number ${BUILD_NUMBER}, type 1 to try again and click Proceed. You can also cancel the build typing 0 and clicking Proceed."
 
                                     // Ask the user to try again or end the pipeline
                                     tryAgain = input message: "The list of servers is missing for the ${environmentParam} environment. Please type 1 to try again or 0 to end the pipeline", parameters: [string(defaultValue: '', description: '', name: '')]
@@ -773,7 +773,7 @@ pipeline {
                             else if (unsucessfulDeploymentArray.size() == serversArray.size()){
                                 
                                 // Send an email to responsible team
-                                sendFailureEmail("Failed to deploy on the following servers: ${unsucessfulDeploymentArray.join(", ")}")
+                                echo "Failed to deploy on the following servers: ${unsucessfulDeploymentArray.join(", ")}"
 
                                 // To copy the deployable file from Inbox folder to Failed folder on Deployment Server
                                 copyDeployableFileToFailed()
@@ -795,7 +795,7 @@ pipeline {
                             else {
                                 
                                 // Send an email to responsible team
-                                sendFailureEmail("Failed to deploy on the following servers: ${unsucessfulDeploymentArray.join(", ")}")
+                                echo "Failed to deploy on the following servers: ${unsucessfulDeploymentArray.join(", ")}"
 
                                 // To copy the deployable file from Inbox folder to Partial-Deployed folder on Deployment Server
                                 copyDeployableFileToPartialDeployed()
