@@ -4,16 +4,16 @@ emailRecipients = p.gesualdo.junior@accenture.com
 */
 
 // Easy update variables
-deploymentServerIp = "172.31.11.171"
-sharedServerIp = "172.31.10.34"
+deploymentServerIp = "192.168.200.130"
+sharedServerIp = "192.168.200.130"
 cumulativeUpdateLabel = "CU"
 dllLabel = "dll"
 hotFixLabel = "HF"
 patchLabel = "PA"
 triesAllowed = 5
 sleepTimeSeconds = 60
-inboxFolderPath = "\\\\${deploymentServerIp}\\adms\\inbox"
-outboxFolderPath = "\\\\${sharedServerIp}\\adms\\outbox"
+inboxFolderPath = "C:\\Jenkins_folders\\jenkins_server_folders\\inbox"
+outboxFolderPath = "C:\\Jenkins_folders\\shared_server_folders\\outbox"
 
 // Other variables organized by name
 calculatedHashValue = 'x'
@@ -147,7 +147,6 @@ def copyHashFile_IfFailure(){
 
 // Function to end the pipeline as failed, sending an email with a message received as parameter and registering in Jenkins console the same message
 def failPipeline(message) {
-    sendFailureEmail(message)
     error(message)
 }
 
@@ -237,7 +236,6 @@ def removeHashFile_IfFailure() {
 
 // Function to send an alert by email with a message received as parameter and registering in Jenkins console the same message
 def sendAlert(message) {
-    sendFailureEmail(message)
     echo(message)
 }
 
@@ -319,14 +317,6 @@ pipeline {
                     // To check connection with Shared Server and Deployment Server
                     checkConnection(sharedServerIp)
                     checkConnection(deploymentServerIp)
-                }
-            }
-        }
-        stage('To check environment variables') {
-            steps {
-                script {
-                    // To check the emailRecipients environment variable
-                    checkEnvironmentVariable_emailRecipients()
                 }
             }
         }
