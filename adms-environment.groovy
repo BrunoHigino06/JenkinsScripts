@@ -361,7 +361,7 @@ def deploy(server, commandsArray) {
                         unsucessfulDeploymentArray.push(server)
 
                         // Send an email to responsible team
-                        failPipeline("Failed to execute the command ${commandsArray[commandCounter]} and the following on the server ${server}")
+                        echo "Failed to execute the command ${commandsArray[commandCounter]} and the following on the server ${server}"
                     }
                 }
 
@@ -479,7 +479,6 @@ def sendFailureEmail(message) {
 
 // Function to send an success message by email with a message received as parameter and registering in Jenkins console the same message
 def sendSuccess(message) {
-    sendSuccessEmail(message)
     echo(message)
 }
 
