@@ -137,14 +137,11 @@ def hashChecked(fileToCheckFolderPath, verifiedHashFolderPath){
 
             // To check if the calculated hash is equals to verified hash
             if(calculatedHashValue == verifiedHashValue) return true
-            else 
-                echo "test"
+            else echo "Deployable file and hash file don't match"
         }
-        else 
-            echo "test"
+        else echo "The hash file does not have a hash value"
     }
-    else 
-        echo "test"
+    else echo "Text file with hash not found"
 
     return false
 }
