@@ -382,7 +382,6 @@ def deploy(server, commandsArray) {
                             //build job: 'adms-smoke-tests'
                         
                             // Exit the loop so no other command is executed
-                            break
                         }
                         else {
 
