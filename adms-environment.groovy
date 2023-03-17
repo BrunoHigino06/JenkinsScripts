@@ -311,9 +311,8 @@ def deploy(server, commandsArray) {
         Boolean commandSucessful
 
         // To create a separated stage for each server
-        stage("Deploy to ${server}") {
-            stage("Executing ${commandsArray}") {
-                // To begin from the first command of the list
+        stage("Deploy to ${server}") {           
+            // To begin from the first command of the list
             commandCounter = 0
 
             // To reset the counter of tries for each command
@@ -321,8 +320,8 @@ def deploy(server, commandsArray) {
             
             // To repeat the command for a number of times
             while (true) {
-
-                // To increase the counter of tries for each command
+                stage("Executing ${commandsArray}") {
+                    // To increase the counter of tries for each command
                 commandTries++
 
                 // To reset the command controller as if the command is sucessful, because if it is not sucessful it will entry the catch and will set the controller as unsucessful
@@ -392,11 +391,10 @@ def deploy(server, commandsArray) {
                         commandTries = 0
                     }
                 }
-            }
 
+                }
+                
             }
-            
-            
         }
     }   
 }
