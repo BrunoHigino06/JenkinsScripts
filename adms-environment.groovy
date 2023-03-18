@@ -309,8 +309,7 @@ def deploy(server, commandsArray) {
         // To create a separated stage for each server
         stage("Deploy to ${server}") {           
 
-            // Loop for execute all commands on the servers
-            continueloop = "0"
+
             // To begin from the first command of the list
             commandCounter = 0
 
@@ -319,6 +318,9 @@ def deploy(server, commandsArray) {
             
             // To repeat the command for a number of times
             while (continueloop == "0") {
+                
+                // Loop for execute all commands on the servers
+                continueloop = "0"
 
                 stage("Executing ${commandsArray[commandCounter]}") {
 
