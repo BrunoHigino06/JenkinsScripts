@@ -304,13 +304,13 @@ def deploy(server, commandsArray) {
         int commandCounter
         int commandTries
         Boolean commandSucessful
-        Boolean continueloop
+        int continueloop
 
         // To create a separated stage for each server
         stage("Deploy to ${server}") {           
 
             // Loop for execute all commands on the servers
-            continueloop = true
+            continueloop = "0"
             // To begin from the first command of the list
             commandCounter = 0
 
@@ -318,7 +318,7 @@ def deploy(server, commandsArray) {
             commandTries = 0
             
             // To repeat the command for a number of times
-            while (continueloop == true) {
+            while (continueloop == "0") {
 
                 stage("Executing ${commandsArray[commandCounter]}") {
 
@@ -373,7 +373,7 @@ def deploy(server, commandsArray) {
                         echo ">>>>> Success"
 
                         // If the last command of the list is already executed
-                        if (commandsArray.size() == 5){
+                        if (commandsArray.size() == 4){
                         
                             // Send an email to responsible team and register in the console
                             sendSuccess("Deployment sucessfull on server ${server}")
@@ -382,7 +382,7 @@ def deploy(server, commandsArray) {
                             //build job: 'adms-smoke-tests'
                         
                             // Exit the loop so no other command is executed
-                            continueloop == false
+                            continueloop == "1"
                         }
                         else {
 
