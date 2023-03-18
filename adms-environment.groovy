@@ -373,7 +373,7 @@ def deploy(server, commandsArray) {
                         echo ">>>>> Success"
 
                         // If the last command of the list is already executed
-                        if (commandCounter >= commandsArray.size()){
+                        if (commandsArray.size() == 4){
                         
                             // Send an email to responsible team and register in the console
                             sendSuccess("Deployment sucessfull on server ${server}")
