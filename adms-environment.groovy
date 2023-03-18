@@ -385,6 +385,7 @@ def deploy(server, commandsArray) {
                         
                             // Exit the loop so no other command is executed
                             continueloop == "1"
+                            break
                         }
                         else {
 
