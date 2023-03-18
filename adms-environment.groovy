@@ -133,7 +133,6 @@ def checkEnvironmentVariable_paCommands() {
         }
     }
 }
-
 // To check if there is a list of commands for the type of deployment
 def checkListOfCommands(){
     switch(params.deployParam) {
@@ -144,12 +143,10 @@ def checkListOfCommands(){
         default: failPipeline("Failed to identify deployment type or list of commands")
     }
 }
-
 // Function to check a parameter. It fails the pipeline if the parameter is null.
 def checkParameter(parameterName,parameterValue) {
     if (parameterValue == "") failPipeline("Failed to receive the following parameter: ${parameterName}")
 }
-
 // Functions to copy the deployable file from Inbox folder to Deployed folder in the Deployment Server
 def copyDeployableFileToDeployed() {
     // To execute the function tryManyTimes passing as parameter: function to execute, function to check and function to execute in case of failure after trying many times
@@ -175,7 +172,6 @@ def copyDeployableFileToDeployed_IfFailure() {
     // Send an alert message to the user, without ending the pipeline as failed
     sendAlert("The deployable file could not be copied from Inbox folder to Deployed folder, please copy it manually. Name of the destination file: ${environmentParam}-build-$BUILD_NUMBER-${deployableFileName}")
 }
-
 // Functions to copy the deployable file from Inbox folder to Failed folder in the Deployment Server
 def copyDeployableFileToFailed() {
     // To execute the function tryManyTimes passing as parameter: function to execute, function to check and function to execute in case of failure after trying many times
@@ -200,7 +196,6 @@ def copyDeployableFileToFailed_IfFailure() {
     // Send an alert message to the user, without ending the pipeline as failed
     sendAlert("The deployable file could not be copied from Inbox folder to Failed folder, please copy it manually. Name of the destination file: ${environmentParam}-build-$BUILD_NUMBER-${deployableFileName}")
 }
-
 // Functions to copy the deployable file from Inbox folder to Partial-Deployed folder in the Deployment Server
 def copyDeployableFileToPartialDeployed() {
     // To execute the function tryManyTimes passing as parameter: function to execute, function to check and function to execute in case of failure after trying many times
@@ -377,7 +372,7 @@ def deploy(server, commandsArray) {
                         echo ">>>>> Success"
 
                         // If the last command of the list is already executed
-                        if (commandCounter == commandsArray.size()){
+                        if (commandCounter >= commandsArray.size()){
                         
                             // Send an email to responsible team and register in the console
                             sendSuccess("Deployment sucessfull on server ${server}")
