@@ -36,7 +36,6 @@ tryAgain = "1"
 unsucessfulDeploymentArray = []
 verifiedHashFileName = ""
 verifiedHashValue = "y"
-continueloop = true
 
 // Function to check the connection with a server. It fails the pipeline if there is there is no sucessful connection.
 def checkConnection(server) {
@@ -310,9 +309,11 @@ def deploy(server, commandsArray) {
         int commandCounter
         int commandTries
         Boolean commandSucessful
+        int continueloop
 
         // To create a separated stage for each server
         stage("Deploy to ${server}") {           
+            continueloop = true
             // To begin from the first command of the list
             commandCounter = 0
 
@@ -321,9 +322,9 @@ def deploy(server, commandsArray) {
             
             // To repeat the command for a number of times
             while (continueloop == true) {
+
                 stage("Executing ${commandsArray}") {
 
-                
                     // To increase the counter of tries for each command
                     commandTries++
 
