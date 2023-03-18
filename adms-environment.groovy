@@ -335,6 +335,7 @@ def deploy(server, commandsArray) {
                         // Command line of the Deployment Tool according to the documentation (it is as echo now but when the Deployment Tool is set up, change it to powershell using Invoke-Command)
                         echo "C:\\Program Files\\SchneiderElectric\\DeploymentTool\\3.8.3\\bin\\DeploymentTool.exe AD -system ${server} -mode MyDMS -pass <password> -email name1.lastname1@schneider-electric-dms.com name2.lastname2@schneider-electric-dms.com -configuration ${commandsArray[commandCounter]} -environment InstallationDir:${inboxFolderPath}\\${deployableFileName}"
                         echo "${commandsArray.size()}"
+                        echo "${commandCounter}"
                         // Fail the command within the failure percentage (only for test purposes, on production set failurePercentage to 0)
                         //randomNumber1to100 = Math.abs(new Random().nextInt() % 100) + 1
                         //if (randomNumber1to100 < failurePercentage){
