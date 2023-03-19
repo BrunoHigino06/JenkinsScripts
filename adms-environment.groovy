@@ -320,7 +320,7 @@ def deploy(server, commandsArray) {
             continueloop = 0
             
             // To repeat the command for a number of times
-            while (continueloop = 0) {
+            while (continueloop = 1) {
                 
                 stage("Executing ${commandsArray[commandCounter]}") {
 
