@@ -304,7 +304,6 @@ def deploy(server, commandsArray) {
         int commandCounter
         int commandTries
         Boolean commandSucessful
-        int continueloop
 
         // To create a separated stage for each server
         stage("Deploy to ${server}") {           
