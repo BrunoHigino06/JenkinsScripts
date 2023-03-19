@@ -316,7 +316,7 @@ def deploy(server, commandsArray) {
             commandTries = 0
             
             // To repeat the command for a number of times
-            while (true) {
+            while (commandsArray.size() == commandCounter) {
 
                 stage("Executing ${commandsArray[commandCounter]}") {
 
@@ -380,7 +380,6 @@ def deploy(server, commandsArray) {
                             //build job: 'check'
                         
                             // Exit the loop so no other command is executed
-                            currentBuild.result = 'SUCCESS'
                         }
                         else {
 
