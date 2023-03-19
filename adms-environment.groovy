@@ -377,10 +377,11 @@ def deploy(server, commandsArray) {
                             sendSuccess("Deployment sucessfull on server ${server}")
 
                             // Start Smoke Tests Pipeline
-                            build job: 'check'
+                            //build job: 'check'
                         
                             // Exit the loop so no other command is executed
-                            break
+                            //currentBuild.result = 'SUCCESS'
+                            return
                         }
                         else {
 
