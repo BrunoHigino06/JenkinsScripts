@@ -317,10 +317,7 @@ def deploy(server, commandsArray) {
             commandTries = 0
             
             // To repeat the command for a number of times
-            while (continueloop == "0") {
-                
-                // Loop for execute all commands on the servers
-                continueloop = "0"
+            while (true) {
 
                 stage("Executing ${commandsArray[commandCounter]}") {
 
@@ -384,7 +381,6 @@ def deploy(server, commandsArray) {
                             //build job: 'adms-smoke-tests'
                         
                             // Exit the loop so no other command is executed
-                            continueloop == "1"
                             break
                         }
                         else {
