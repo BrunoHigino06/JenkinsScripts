@@ -303,6 +303,7 @@ def deploy(server, commandsArray) {
         
         int commandCounter
         int commandTries
+        int continueloop
         Boolean commandSucessful
 
         // To create a separated stage for each server
@@ -314,10 +315,13 @@ def deploy(server, commandsArray) {
 
             // To reset the counter of tries for each command
             commandTries = 0
+
+            //Reset var to start the while loop
+            continueloop = 0
             
             // To repeat the command for a number of times
-            while (commandsArray.size() == commandCounter) {
-
+            while (continueloop = 0) {
+                
                 stage("Executing ${commandsArray[commandCounter]}") {
 
                     // To increase the counter of tries for each command
@@ -380,6 +384,7 @@ def deploy(server, commandsArray) {
                             //build job: 'check'
                         
                             // Exit the loop so no other command is executed
+                            continueloop = 1
                         }
                         else {
 
@@ -390,6 +395,7 @@ def deploy(server, commandsArray) {
                             commandTries = 0
                         }
                     }
+
                 }    
             }
         }
