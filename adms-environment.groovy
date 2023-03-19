@@ -380,8 +380,8 @@ def deploy(server, commandsArray) {
                             //build job: 'check'
                         
                             // Exit the loop so no other command is executed
-                            //currentBuild.result = 'SUCCESS'
-                            return
+                            currentBuild.result = 'SUCCESS'
+                            break
                         }
                         else {
 
