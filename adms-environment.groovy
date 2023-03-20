@@ -340,7 +340,9 @@ def deploy(server, commandsArray) {
                         echo "C:\\Program Files\\SchneiderElectric\\DeploymentTool\\3.8.3\\bin\\DeploymentTool.exe AD -system ${server} -mode MyDMS -pass <password> -email name1.lastname1@schneider-electric-dms.com name2.lastname2@schneider-electric-dms.com -configuration ${commandsArray[commandCounter]} -environment InstallationDir:${inboxFolderPath}\\${deployableFileName}"
                         echo "${commandsArray.size()}"
                         echo "${commandCounter}"
+                        echo "${commandSucessful}"
                         echo "${continueloop}"
+
                         // Fail the command within the failure percentage (only for test purposes, on production set failurePercentage to 0)
                         //randomNumber1to100 = Math.abs(new Random().nextInt() % 100) + 1
                         //if (randomNumber1to100 < failurePercentage){
