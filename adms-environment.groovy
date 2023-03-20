@@ -304,7 +304,7 @@ def deploy(server, commandsArray) {
         int commandCounter
         int commandTries
         int continueloop
-        Boolean commandSucessful
+        int commandSucessful
 
         // To create a separated stage for each server
         stage("Deploy to ${server}") {           
@@ -318,6 +318,8 @@ def deploy(server, commandsArray) {
 
             //Reset var to start the while loop
             continueloop = 0
+
+            commandSucessful = 0
             
             // To repeat the command for a number of times
             while (continueloop == 0) {
@@ -328,7 +330,7 @@ def deploy(server, commandsArray) {
                     commandTries++
 
                     // To reset the command controller as if the command is sucessful, because if it is not sucessful it will entry the catch and will set the controller as unsucessful
-                    commandSucessful = true
+                    commandSucessful = 0
 
                     // Show the command and the attempt on the console
                     echo ">>>>> Command: ${commandsArray[commandCounter]} Attempt: ${commandTries}"
@@ -351,7 +353,7 @@ def deploy(server, commandsArray) {
                         echo ">>>>> Failed"
 
                         // Set the command controller as unsucessful
-                        commandSucessful = false
+                        commandSucessful = 1
 
                         // If Jenkins tried to execute the command for less than 5 times
                         if (commandTries < 5) {
@@ -370,7 +372,7 @@ def deploy(server, commandsArray) {
                     }
 
                     // If the command controler is still sucessfull
-                    if (commandSucessful == true) {
+                    if (commandSucessful == 0) {
                     
                         // Show that the command was successful on the console
                         echo ">>>>> Success"
