@@ -332,7 +332,7 @@ def deploy(server, commandsArray) {
 
                     // Show the command and the attempt on the console
                     echo ">>>>> Command: ${commandsArray[commandCounter]} Attempt: ${commandTries}"
-                                         
+
                     try {
                         // Command line of the Deployment Tool according to the documentation (it is as echo now but when the Deployment Tool is set up, change it to powershell using Invoke-Command)
                         echo "C:\\Program Files\\SchneiderElectric\\DeploymentTool\\3.8.3\\bin\\DeploymentTool.exe AD -system ${server} -mode MyDMS -pass <password> -email name1.lastname1@schneider-electric-dms.com name2.lastname2@schneider-electric-dms.com -configuration ${commandsArray[commandCounter]} -environment InstallationDir:${inboxFolderPath}\\${deployableFileName}"
