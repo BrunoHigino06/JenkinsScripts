@@ -9,7 +9,7 @@ emailRecipients = p.gesualdo.junior@accenture.com
 */
 
 // Easy update variables
-deploymentServerIp = "192.168.200.130"
+deploymentServerIp = "127.0.0.1"
 cumulativeUpdateLabel = "CU"
 dllLabel = "DLL"
 hotFixLabel = "HF"
