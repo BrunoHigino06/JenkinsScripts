@@ -389,7 +389,7 @@ def deploy(server, commandsArray) {
                             //build job: 'check'
                         
                             // Exit the loop so no other command is executed
-                            continueloop == 1
+                            continueloop ++
                         }
                         else {
 
