@@ -317,7 +317,7 @@ def deploy(server, commandsArray) {
             commandTries = 0
 
             //Reset var to start the while loop
-            //continueloop = 0
+            continueloop = 0
 
             commandSucessful = 0
             
